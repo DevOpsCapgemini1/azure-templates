@@ -1,0 +1,64 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.9.1.41621",
+      "templateHash": "7023764074721236007"
+    }
+  },
+  "parameters": {
+    "location": {
+      "type": "string",
+      "metadata": {
+        "description": "The region in which the VNET will be created"
+      }
+    },
+    "virtualNetworkName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of VNET"
+      }
+    },
+    "addressSpace": {
+      "type": "string",
+      "metadata": {
+        "description": "VNET address space"
+      }
+    },
+    "arrayOfSubnets": {
+      "type": "array",
+      "metadata": {
+        "description": "Array of subnets"
+      }
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Network/virtualNetworks",
+      "apiVersion": "2019-11-01",
+      "name": "[parameters('virtualNetworkName')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "copy": [
+          {
+            "name": "subnets",
+            "count": "[length(parameters('arrayOfSubnets'))]",
+            "input": {
+              "name": "[parameters('arrayOfSubnets')[copyIndex('subnets')].name]",
+              "properties": {
+                "addressPrefix": "[parameters('arrayOfSubnets')[copyIndex('subnets')].subnetPrefix]"
+              }
+            }
+          }
+        ],
+        "addressSpace": {
+          "addressPrefixes": [
+            "[parameters('addressSpace')]"
+          ]
+        }
+      }
+    }
+  ]
+}

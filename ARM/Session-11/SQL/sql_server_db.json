@@ -1,0 +1,99 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+
+  "parameters": {
+    "location": {
+      "type": "string",
+      "metadata": {
+        "description": "The region in which the SQL Server and Database will be created."
+      }
+    },
+    "serverName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of primary SQL server"
+      }
+    },
+    "sqlDBName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the SQL Database."
+      }
+    },
+    "pricing_tier": {
+      "type": "object",
+      "metadata": {
+        "description": "The name and tier of SKU"
+      }
+    },
+    "DbBackupPolicy": {
+      "type": "string",
+      "metadata": {
+        "description": "The storage account type to be used to store backups for this database."
+      }
+    },
+    "ArrayOfRules": {
+      "type": "array",
+      "metadata": {
+        "description": "Firewall rules."
+      }
+    },
+    "administratorLogin": {
+      "type": "string",
+      "metadata": {
+        "description": "The administrator username of the SQL logical server."
+      }
+    },
+    "administratorLoginPassword": {
+      "type": "secureString",
+      "metadata": {
+        "description": "The administrator password of the SQL logical server."
+      }
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Sql/servers",
+      "apiVersion": "2022-02-01-preview",
+      "name": "[parameters('serverName')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "administratorLogin": "[parameters('administratorLogin')]",
+        "administratorLoginPassword": "[parameters('administratorLoginPassword')]"
+      }
+    },
+    {
+      "type": "Microsoft.Sql/servers/databases",
+      "apiVersion": "2022-02-01-preview",
+      "name": "[format('{0}/{1}', parameters('serverName'), parameters('sqlDBName'))]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "[parameters('pricing_tier').name]",
+        "tier": "[parameters('pricing_tier').tier]"
+      },
+      "properties": {
+        "requestedBackupStorageRedundancy": "[parameters('DbBackupPolicy')]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Sql/servers', parameters('serverName'))]"
+      ]
+    },
+    {
+      "copy": {
+        "name": "sqlServerFirewallRules",
+        "count": "[length(parameters('ArrayOfRules'))]"
+      },
+      "type": "Microsoft.Sql/servers/firewallRules",
+      "apiVersion": "2022-02-01-preview",
+      "name": "[format('{0}/{1}', parameters('serverName'), parameters('ArrayOfRules')[copyIndex()].name)]",
+      "properties": {
+        "startIpAddress": "[parameters('ArrayOfRules')[copyIndex()].startIpAddress]",
+        "endIpAddress": "[parameters('ArrayOfRules')[copyIndex()].endIpAddress]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Sql/servers', parameters('serverName'))]"
+      ]
+    }
+  ]
+}

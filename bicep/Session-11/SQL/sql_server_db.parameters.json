@@ -1,0 +1,42 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "value": "uksouth"
+    },
+    "serverName": {
+      "value": "myUniqueSqlServer"
+    },
+    "sqlDBName": {
+      "value": "myUniqueSqlDatabase"
+    },
+    "pricing_tier": {
+      "value": {
+        "name": "S0",
+        "tier": "Standard"
+      }
+    },
+    "DbBackupPolicy": {
+      "value": "Geo"
+    },
+    "ArrayOfRules": {
+      "value": [{
+        "name": "1stRule",
+        "startIpAddress": "0.0.0.0",
+        "endIpAddress": "0.0.0.0"
+      },
+      {
+        "name": "2ndRule",
+        "startIpAddress": "0.0.0.1",
+        "endIpAddress": "0.0.0.1"
+      }]
+    },
+    "administratorLogin": {
+      "value": "mbinds"
+    },
+    "administratorLoginPassword": {
+      "value": "VeryHardPassword123!"
+    }
+  }
+}

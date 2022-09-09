@@ -1,0 +1,44 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "value": "francecentral"
+    },
+    "serverName": {
+      "value": "franceserverqweqw"
+    },
+    "sqlDBName": {
+      "value": "francedatabaseqweqwr"
+    },
+    "pricing_tier": {
+      "value": {
+        "name": "S0",
+        "tier": "Standard"
+      }
+    },
+    "DbBackupPolicy": {
+      "value": "Geo"
+    },
+    "ArrayOfRules": {
+      "value": [
+        {
+          "name": "0Rule",
+          "startIpAddress": "0.0.0.0",
+          "endIpAddress": "0.0.0.0"
+        },
+        {
+          "name": "1Rule",
+          "startIpAddress": "0.0.0.1",
+          "endIpAddress": "0.0.0.1"
+        }
+      ]
+    },
+    "administratorLogin": {
+      "value": "mbinds"
+    },
+    "administratorLoginPassword": {
+      "value": "HARDpassword123!"
+    }
+  }
+}

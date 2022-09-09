@@ -1,0 +1,5 @@
+location             = "eastus"
+resource_group_name  = "tfeastus"
+virtual_network_name = "myVnetTF"
+subnetName           = "GatewaySubnet"
+appName              = "myuniquelinuxwebapplication"

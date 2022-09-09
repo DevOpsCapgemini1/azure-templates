@@ -1,0 +1,203 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.9.1.41621",
+      "templateHash": "14874282410919719994"
+    }
+  },
+  "parameters": {
+    "location": {
+      "type": "string"
+    },
+    "applicationGatewayName": {
+      "type": "string"
+    },
+    "tier": {
+      "type": "string"
+    },
+    "skuSize": {
+      "type": "string"
+    },
+    "capacity": {
+      "type": "int",
+      "defaultValue": 2
+    },
+    "subnetName": {
+      "type": "string"
+    },
+    "zones": {
+      "type": "array"
+    },
+    "publicIpAddressName": {
+      "type": "string"
+    },
+    "sku": {
+      "type": "string"
+    },
+    "allocationMethod": {
+      "type": "string"
+    },
+    "publicIpZones": {
+      "type": "array"
+    },
+    "autoScaleMaxCapacity": {
+      "type": "int"
+    }
+  },
+  "variables": {
+    "vnetId": "/subscriptions/7d357068-33cb-4607-bb4d-02eaf5d20f25/resourceGroups/uksouthgrp/providers/Microsoft.Network/virtualNetworks/myVnetName",
+    "publicIPRef": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIpAddressName'))]",
+    "subnetRef": "[format('{0}/subnets/{1}', variables('vnetId'), parameters('subnetName'))]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Network/applicationGateways",
+      "apiVersion": "2021-08-01",
+      "name": "[parameters('applicationGatewayName')]",
+      "location": "[parameters('location')]",
+      "zones": "[parameters('zones')]",
+      "tags": {},
+      "properties": {
+        "sku": {
+          "name": "[parameters('skuSize')]",
+          "tier": "[parameters('tier')]"
+        },
+        "gatewayIPConfigurations": [
+          {
+            "name": "appGatewayIpConfig",
+            "properties": {
+              "subnet": {
+                "id": "[variables('subnetRef')]"
+              }
+            }
+          }
+        ],
+        "frontendIPConfigurations": [
+          {
+            "name": "appGwPublicFrontendIp",
+            "properties": {
+              "publicIPAddress": {
+                "id": "[variables('publicIPRef')]"
+              }
+            }
+          }
+        ],
+        "frontendPorts": [
+          {
+            "name": "port_80",
+            "properties": {
+              "port": 80
+            }
+          }
+        ],
+        "backendAddressPools": [
+          {
+            "name": "MyBackendPool",
+            "properties": {
+              "backendAddresses": [
+                {
+                  "fqdn": "myuniquewebappname.azurewebsites.net"
+                }
+              ]
+            }
+          }
+        ],
+        "backendHttpSettingsCollection": [
+          {
+            "name": "MyBackendSettings",
+            "properties": {
+              "port": 80,
+              "protocol": "Http",
+              "cookieBasedAffinity": "Disabled",
+              "requestTimeout": 20,
+              "pickHostNameFromBackendAddress": true,
+              "probe": {
+                "id": "[resourceId('Microsoft.Network/applicationGateways/probes', parameters('applicationGatewayName'), 'MyBackendSettings3ad01dc3-7c27-4fc0-aa7b-edd7a3535050')]"
+              }
+            }
+          }
+        ],
+        "backendSettingsCollection": [],
+        "httpListeners": [
+          {
+            "name": "MyListener",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[resourceId('Microsoft.Network/applicationGateways/frontendIPConfigurations', parameters('applicationGatewayName'), 'appGwPublicFrontendIp')]"
+              },
+              "frontendPort": {
+                "id": "[resourceId('Microsoft.Network/applicationGateways/frontendPorts', parameters('applicationGatewayName'), 'port_80')]"
+              },
+              "protocol": "Http",
+              "sslCertificate": null
+            }
+          }
+        ],
+        "listeners": [],
+        "requestRoutingRules": [
+          {
+            "name": "MyRoutingRule",
+            "properties": {
+              "ruleType": "Basic",
+              "httpListener": {
+                "id": "[resourceId('Microsoft.Network/applicationGateways/httpListeners', parameters('applicationGatewayName'), 'MyListener')]"
+              },
+              "priority": 100,
+              "backendAddressPool": {
+                "id": "[resourceId('Microsoft.Network/applicationGateways/backendAddressPools', parameters('applicationGatewayName'), 'MyBackendPool')]"
+              },
+              "backendHttpSettings": {
+                "id": "[resourceId('Microsoft.Network/applicationGateways/backendHttpSettingsCollection', parameters('applicationGatewayName'), 'MyBackendSettings')]"
+              }
+            }
+          }
+        ],
+        "routingRules": [],
+        "enableHttp2": false,
+        "sslCertificates": [],
+        "probes": [
+          {
+            "name": "MyBackendSettings3ad01dc3-7c27-4fc0-aa7b-edd7a3535050",
+            "properties": {
+              "backendHttpSettings": [
+                {
+                  "id": "[resourceId('Microsoft.Network/applicationGateways/backendHttpSettingsCollection', parameters('applicationGatewayName'), 'MyBackendSettings')]"
+                }
+              ],
+              "interval": 30,
+              "minServers": 0,
+              "path": "/",
+              "protocol": "Http",
+              "timeout": 30,
+              "unhealthyThreshold": 3,
+              "pickHostNameFromBackendHttpSettings": true
+            }
+          }
+        ],
+        "autoscaleConfiguration": {
+          "minCapacity": "[parameters('capacity')]",
+          "maxCapacity": "[parameters('autoScaleMaxCapacity')]"
+        }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIpAddressName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Network/publicIPAddresses",
+      "apiVersion": "2020-08-01",
+      "name": "[parameters('publicIpAddressName')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "[parameters('sku')]"
+      },
+      "zones": "[parameters('publicIpZones')]",
+      "properties": {
+        "publicIPAllocationMethod": "[parameters('allocationMethod')]"
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "value": "francecentral"
+    },
+    "appServicePlanName": {
+      "value": "franceappserviceplaneqwrtq"
+    },
+    "webAppName": {
+      "value": "francewebappqwtqtsa"
+    },
+    "pricing_tier": {
+      "value": {
+        "name": "B1",
+        "tier": "Basic"
+      }
+    },
+    "num_of_workers": {
+      "value": 2
+    },
+    "dockerImage": {
+      "value": "DOCKER|mcr.microsoft.com/appsvc/staticsite:latest"
+    }
+  }
+}

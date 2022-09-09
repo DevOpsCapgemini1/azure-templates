@@ -1,0 +1,49 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.9.1.41621",
+      "templateHash": "2472186338421091421"
+    }
+  },
+  "parameters": {
+    "vnetName": {
+      "type": "string"
+    },
+    "subnetName": {
+      "type": "string"
+    },
+    "webAppName": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Network/privateEndpoints",
+      "apiVersion": "2021-05-01",
+      "name": "[parameters('webAppName')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "subnet": {
+          "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', split(format('{0}/{1}', parameters('vnetName'), parameters('subnetName')), '/')[0], split(format('{0}/{1}', parameters('vnetName'), parameters('subnetName')), '/')[1])]"
+        },
+        "privateLinkServiceConnections": [
+          {
+            "name": "[parameters('webAppName')]",
+            "properties": {
+              "privateLinkServiceId": "[resourceId('Microsoft.Web/sites', parameters('webAppName'))]",
+              "groupIds": [
+                "sites"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

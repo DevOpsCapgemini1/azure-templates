@@ -1,0 +1,82 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.9.1.41621",
+      "templateHash": "3460176450748352822"
+    }
+  },
+  "parameters": {
+    "location": {
+      "type": "string",
+      "metadata": {
+        "description": "The region in which the SQL Server and Database will be created."
+      }
+    },
+    "appServicePlanName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of app service plan"
+      }
+    },
+    "webAppName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of web app"
+      }
+    },
+    "pricing_tier": {
+      "type": "object",
+      "metadata": {
+        "description": "The name and tier of SKU"
+      }
+    },
+    "num_of_workers": {
+      "type": "int",
+      "metadata": {
+        "description": "Nodes in web farm"
+      }
+    },
+    "dockerImage": {
+      "type": "string",
+      "metadata": {
+        "description": "Docker hub image to be used"
+      }
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Web/serverfarms",
+      "apiVersion": "2020-12-01",
+      "name": "[parameters('appServicePlanName')]",
+      "location": "[parameters('location')]",
+      "kind": "linux",
+      "properties": {
+        "reserved": true,
+        "targetWorkerCount": "[parameters('num_of_workers')]"
+      },
+      "sku": {
+        "name": "[parameters('pricing_tier').name]",
+        "tier": "[parameters('pricing_tier').tier]"
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2021-01-01",
+      "name": "[parameters('webAppName')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "siteConfig": {
+          "appSettings": [],
+          "linuxFxVersion": "[parameters('dockerImage')]"
+        },
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('appServicePlanName'))]"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', parameters('appServicePlanName'))]"
+      ]
+    }
+  ]
+}

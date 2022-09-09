@@ -1,0 +1,91 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.9.1.41621",
+      "templateHash": "5978808819917113820"
+    }
+  },
+  "parameters": {
+    "nsgName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of nsg"
+      }
+    },
+    "vnetName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of vnet"
+      }
+    },
+    "subnetName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of subnet"
+      }
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2020-10-01",
+      "name": "[format('update-vnet-subnet-{0}-{1}', parameters('vnetName'), parameters('subnetName'))]",
+      "properties": {
+        "expressionEvaluationOptions": {
+          "scope": "inner"
+        },
+        "mode": "Incremental",
+        "parameters": {
+          "vnetName": {
+            "value": "[parameters('vnetName')]"
+          },
+          "subnetName": {
+            "value": "[parameters('subnetName')]"
+          },
+          "properties": {
+            "value": "[union(reference(resourceId('Microsoft.Network/virtualNetworks/subnets', split(format('{0}/{1}', parameters('vnetName'), parameters('subnetName')), '/')[0], split(format('{0}/{1}', parameters('vnetName'), parameters('subnetName')), '/')[1]), '2022-01-01'), createObject('networkSecurityGroup', createObject('id', resourceId('Microsoft.Network/networkSecurityGroups', parameters('nsgName')))))]"
+          }
+        },
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "metadata": {
+            "_generator": {
+              "name": "bicep",
+              "version": "0.9.1.41621",
+              "templateHash": "4476826970682445813"
+            }
+          },
+          "parameters": {
+            "vnetName": {
+              "type": "string",
+              "metadata": {
+                "description": "Name of vnet"
+              }
+            },
+            "subnetName": {
+              "type": "string",
+              "metadata": {
+                "description": "Name of subnet"
+              }
+            },
+            "properties": {
+              "type": "object"
+            }
+          },
+          "resources": [
+            {
+              "type": "Microsoft.Network/virtualNetworks/subnets",
+              "apiVersion": "2022-01-01",
+              "name": "[format('{0}/{1}', parameters('vnetName'), parameters('subnetName'))]",
+              "properties": "[parameters('properties')]"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

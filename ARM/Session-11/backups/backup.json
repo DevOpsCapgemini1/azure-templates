@@ -1,0 +1,53 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+
+  "parameters": {
+    "webAppName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of web app"
+      }
+    },
+    "storageAccountUrl": {
+      "type": "string",
+      "metadata": {
+        "description": "SAS URL to the container."
+      }
+    },
+    "backupSchedule": {
+      "type": "object",
+      "metadata": {
+        "description": "Schedule for the backup if it is executed periodically."
+      }
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Web/sites/config",
+      "apiVersion": "2022-03-01",
+      "name": "[format('{0}/{1}', parameters('webAppName'), 'backup')]",
+      "kind": "string",
+      "properties": {
+        "backupName": "mybackup",
+        "backupSchedule": {
+          "frequencyInterval": "[parameters('backupSchedule').frequencyInterval]",
+          "frequencyUnit": "[parameters('backupSchedule').frequencyUnit]",
+          "keepAtLeastOneBackup": "[parameters('backupSchedule').keepAtLeastOneBackup]",
+          "retentionPeriodInDays": "[parameters('backupSchedule').retentionPeriodInDays]",
+          "startTime": "[parameters('backupSchedule').startTime]"
+        },
+        "databases": [
+          {
+            "connectionString": "Server=tcp:franceserverqweqw.database.windows.net,1433;Initial Catalog=myUniqueSqlDatabase;Persist Security Info=False;User ID=mbinds;Password=VeryHardPassword123!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;",
+            "connectionStringName": "sqqx",
+            "databaseType": "SqlAzure",
+            "name": "franceserverqweqw"
+          }
+        ],
+        "enabled": true,
+        "storageAccountUrl": "[parameters('storageAccountUrl')]"
+      }
+    }
+  ]
+}

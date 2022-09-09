@@ -1,0 +1,49 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "value": "uksouth"
+    },
+    "name": {
+      "value": "mynsgqwrtwq"
+    },
+    "arrayOfRules": {
+      "value": [
+        {
+          "name": "1stRule",
+          "protocol": "Tcp",
+          "sourcePortRange": "*",
+          "destinationPortRange": "22",
+          "sourceAddressPrefix": "*",
+          "destinationAddressPrefix": "*",
+          "access": "Allow",
+          "priority": 120,
+          "direction": "Inbound"
+        },
+        {
+          "name": "2ndRule",
+          "protocol": "Tcp",
+          "sourcePortRange": "*",
+          "destinationPortRange": "44224",
+          "sourceAddressPrefix": "*",
+          "destinationAddressPrefix": "AzureMachineLearning",
+          "access": "Allow",
+          "priority": 130,
+          "direction": "Inbound"
+        },
+        {
+          "name": "3rdRule",
+          "protocol": "Tcp",
+          "sourcePortRange": "*",
+          "destinationPortRange": "*",
+          "sourceAddressPrefix": "*",
+          "destinationAddressPrefix": "AzureActiveDirectory",
+          "access": "Allow",
+          "priority": 140,
+          "direction": "Outbound"
+        }
+      ]
+    }
+  }
+}

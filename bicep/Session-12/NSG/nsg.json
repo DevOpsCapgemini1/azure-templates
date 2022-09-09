@@ -1,0 +1,60 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.9.1.41621",
+      "templateHash": "4480660274019954883"
+    }
+  },
+  "parameters": {
+    "location": {
+      "type": "string",
+      "metadata": {
+        "description": "Region of nsg"
+      }
+    },
+    "name": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of nsg"
+      }
+    },
+    "arrayOfRules": {
+      "type": "array",
+      "metadata": {
+        "description": "Array of subnets"
+      }
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "apiVersion": "2022-01-01",
+      "name": "[parameters('name')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "copy": [
+          {
+            "name": "securityRules",
+            "count": "[length(parameters('arrayOfRules'))]",
+            "input": {
+              "name": "[parameters('arrayOfRules')[copyIndex('securityRules')].name]",
+              "properties": {
+                "protocol": "[parameters('arrayOfRules')[copyIndex('securityRules')].protocol]",
+                "sourcePortRange": "[parameters('arrayOfRules')[copyIndex('securityRules')].sourcePortRange]",
+                "destinationPortRange": "[parameters('arrayOfRules')[copyIndex('securityRules')].destinationPortRange]",
+                "sourceAddressPrefix": "[parameters('arrayOfRules')[copyIndex('securityRules')].sourceAddressPrefix]",
+                "destinationAddressPrefix": "[parameters('arrayOfRules')[copyIndex('securityRules')].destinationAddressPrefix]",
+                "access": "[parameters('arrayOfRules')[copyIndex('securityRules')].access]",
+                "priority": "[parameters('arrayOfRules')[copyIndex('securityRules')].priority]",
+                "direction": "[parameters('arrayOfRules')[copyIndex('securityRules')].direction]"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
