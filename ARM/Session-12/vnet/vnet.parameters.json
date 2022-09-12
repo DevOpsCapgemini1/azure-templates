@@ -1,0 +1,27 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "value": "uksouth"
+    },
+    "virtualNetworkName": {
+      "value": "myArmVnet"
+    },
+    "addressSpace": {
+      "value": "10.0.0.0/16"
+    },
+    "arrayOfSubnets": {
+      "value": [
+        {
+          "name": "subnet-00",
+          "subnetPrefix": "10.0.0.0/24"
+        },
+        {
+          "name": "subnet-01",
+          "subnetPrefix": "10.0.1.0/24"
+        }
+      ]
+    }
+  }
+}

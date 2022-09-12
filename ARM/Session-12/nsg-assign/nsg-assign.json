@@ -1,0 +1,44 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "type": "string",
+      "defaultValue": "westeurope"
+    },
+    "resourceGroup": {
+      "type": "string",
+      "defaultValue": "uksouthgrp"
+    },
+    "nsgName": {
+      "type": "string"
+    },
+    "vnetName": {
+      "type": "string"
+    },
+    "subnetName": {
+      "type": "string"
+    },
+    "subnetAddressSpace": {
+      "type": "string"
+    }
+  },
+  "variables": {
+    "subnetName": "[concat(parameters('vnetName'), '/', parameters('subnetName'))]",
+    "nsgId": "[resourceId(parameters('resourceGroup'), 'Microsoft.Network/networkSecurityGroups', parameters('nsgName'))]"
+  },
+  "resources": [
+    {
+      "apiVersion": "2020-06-01",
+      "type": "Microsoft.Network/virtualNetworks/subnets",
+      "name": "[variables('subnetName')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "addressPrefix": "[parameters('subnetAddressSpace')]",
+        "networkSecurityGroup": {
+          "id": "[variables('nsgId')]"
+        }
+      }
+    }
+  ]
+}

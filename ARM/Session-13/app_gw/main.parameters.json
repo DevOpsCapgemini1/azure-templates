@@ -1,0 +1,43 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "virtualNetworkName": {
+      "value": "myArmVnet"
+    },
+    "subnetName": {
+      "value": "subnet-01"
+    },
+    "applicationGatewayName": {
+      "value": "app-gateway-01"
+    },
+    "applicationGatewaySize": {
+      "value": "Standard_Small"
+    },
+    "applicationGatewayInstanceCount": {
+      "value": 1
+    },
+    "frontendPort": {
+      "value": 3000
+    },
+    "backendPort": {
+      "value": 5000
+    },
+    "backendIPAddresses": {
+      "value": [
+        {
+          "IpAddress": "10.0.0.4"
+        },
+        {
+          "IpAddress": "10.0.0.5"
+        },
+        {
+          "IpAddress": "10.0.0.6"
+        }
+      ]
+    },
+    "cookieBasedAffinity": {
+      "value": "Disabled"
+    }
+  }
+}

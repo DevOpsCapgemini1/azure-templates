@@ -1,0 +1,38 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "vmName": {
+      "value": "mySecretVM"
+    },
+    "vmImage": {
+      "value": {
+        "publisher": "Canonical",
+        "offer": "UbuntuServer",
+        "sku": "18.04-LTS",
+        "version": "latest"
+      }
+    },
+    "pricing_tier": {
+      "value": "Standard_B4ms"
+    },
+    "disk_pricing_tier": {
+      "value": "Standard_LRS"
+    },
+    "vnetName": {
+      "value": "myVnetName"
+    },
+    "subnetName": {
+      "value": "subnet-01"
+    },
+    "location": {
+      "value": "uksouth"
+    },
+    "adminUsername": {
+      "value": "mbidzins"
+    },
+    "adminPassword": {
+      "value": "HARDpassword1!"
+    }
+  }
+}

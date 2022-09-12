@@ -1,0 +1,47 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "region": {
+      "value": "uksouth"
+    },
+    "gatewayName": {
+      "value": "app-gateway-01"
+    },
+    "vnetName": {
+      "value": "myArmVnet"
+    },
+    "subnetName": {
+      "value": "subnet-00"
+    },
+    "privateEndpoints": {
+      "value": [
+        {
+          "name": "private-endpoint-01",
+          "subnet": {
+            "type": "Microsoft.Network/virtualNetworks/subnets",
+            "vnetName": "myArmVnet",
+            "subnetName": "subnet-01"
+          },
+          "privateLinkServiceConnections": {
+            "name": "subnet-01",
+            "properties": {
+              "privateLinkServiceResource": {
+                "type": "Microsoft.Web/sites",
+                "name": "qrwqwttaer"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "wafRules": {
+      "value": {
+        "enabled": "True",
+        "firewallMode": "Prevention",
+        "ruleSetType": "OWASP",
+        "ruleSetVersion": "3.2"
+      }
+    }
+  }
+}

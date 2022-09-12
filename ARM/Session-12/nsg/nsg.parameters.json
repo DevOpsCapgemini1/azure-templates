@@ -12,36 +12,42 @@
       "value": [
         {
           "name": "1stRule",
-          "protocol": "Tcp",
-          "sourcePortRange": "*",
-          "destinationPortRange": "22",
-          "sourceAddressPrefix": "*",
-          "destinationAddressPrefix": "*",
-          "access": "Allow",
-          "priority": 120,
-          "direction": "Inbound"
+          "properties": {
+            "protocol": "Tcp",
+            "sourcePortRange": "*",
+            "destinationPortRange": "22",
+            "sourceAddressPrefix": "*",
+            "destinationAddressPrefix": "*",
+            "access": "Allow",
+            "priority": 120,
+            "direction": "Inbound"
+          }
         },
         {
           "name": "2ndRule",
-          "protocol": "Tcp",
-          "sourcePortRange": "*",
-          "destinationPortRange": "44224",
-          "sourceAddressPrefix": "*",
-          "destinationAddressPrefix": "AzureMachineLearning",
-          "access": "Allow",
-          "priority": 130,
-          "direction": "Inbound"
+          "properties": {
+            "protocol": "Tcp",
+            "sourcePortRange": "*",
+            "destinationPortRange": "44224",
+            "sourceAddressPrefix": "*",
+            "destinationAddressPrefix": "AzureMachineLearning",
+            "access": "Allow",
+            "priority": 130,
+            "direction": "Inbound"
+          }
         },
         {
           "name": "3rdRule",
-          "protocol": "Tcp",
-          "sourcePortRange": "*",
-          "destinationPortRange": "*",
-          "sourceAddressPrefix": "*",
-          "destinationAddressPrefix": "AzureActiveDirectory",
-          "access": "Allow",
-          "priority": 140,
-          "direction": "Outbound"
+          "properties": {
+            "protocol": "Tcp",
+            "sourcePortRange": "*",
+            "destinationPortRange": "*",
+            "sourceAddressPrefix": "*",
+            "destinationAddressPrefix": "AzureActiveDirectory",
+            "access": "Allow",
+            "priority": 140,
+            "direction": "Outbound"
+          }
         }
       ]
     }
