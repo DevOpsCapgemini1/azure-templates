@@ -4,16 +4,10 @@
 
   "parameters": {
     "vnetName": {
-      "type": "string",
-      "metadata": {
-        "description": "Name of vnet"
-      }
+      "type": "string"
     },
     "subnetName": {
-      "type": "string",
-      "metadata": {
-        "description": "Name of subnet"
-      }
+      "type": "string"
     }
   },
   "resources": [

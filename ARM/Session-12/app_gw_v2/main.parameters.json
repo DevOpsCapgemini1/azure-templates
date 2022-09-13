@@ -1,0 +1,127 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "applicationGatewayName": {
+      "value": "MyApplicationGateway"
+    },
+    "location": {
+      "value": "uksouth"
+    },
+    "tier": {
+      "value": "WAF_v2"
+    },
+    "sku": {
+      "value": "WAF_v2"
+    },
+    "http2Enabled": {
+      "value": true
+    },
+    "capacity": {
+      "value": 2
+    },
+    "autoScaleMaxCapacity": {
+      "value": 10
+    },
+    "publicIpAddressName": {
+      "value": "MyPublicIpAddress-01"
+    },
+    "vNetSubscriptionId": {
+      "value": "7d357068-33cb-4607-bb4d-02eaf5d20f25"
+    },
+    "vNetResourceGroup": {
+      "value": "uksouthgrp"
+    },
+    "vNetName": {
+      "value": "myArmVnet"
+    },
+    "subnetName": {
+      "value": "subnet-01"
+    },
+    "httpListeners": {
+      "value": [
+        {
+          "name": "MyHttpListener",
+          "protocol": "Http",
+          "frontEndPort": "port_80"
+        }
+      ]
+    },
+    "backendAddressPools": {
+      "value": [
+        {
+          "name": "MyBackendPool",
+          "backendAddresses": [
+            {
+              "ipAddress": "10.1.2.3"
+            }
+          ]
+        }
+      ]
+    },
+    "backendHttpSettings": {
+      "value": [
+        {
+          "name": "MyBackendHttpSetting",
+          "port": 80,
+          "protocol": "Http",
+          "cookieBasedAffinity": "Enabled",
+          "affinityCookieName": "MyCookieAffinityName",
+          "requestTimeout": 300,
+          "connectionDraining": {
+            "drainTimeoutInSec": 60,
+            "enabled": true
+          }
+        }
+      ]
+    },
+    "rules": {
+      "value": [
+        {
+          "name": "MyRuleName",
+          "ruleType": "Basic",
+          "listener": "MyHttpListener",
+          "backendPool": "MyBackendPool",
+          "backendHttpSettings": "MyBackendHttpSetting"
+        }
+      ]
+    },
+    "frontEndPorts": {
+      "value": [
+        {
+          "name": "port_80",
+          "port": 80
+        }
+      ]
+    },
+    "enableWebApplicationFirewall": {
+      "value": true
+    },
+    "firewallPolicyName": {
+      "value": "MyFirewallPolicyName"
+    },
+    "firewallPolicySettings": {
+      "value": {
+        "requestBodyCheck": true,
+        "maxRequestBodySizeInKb": 128,
+        "fileUploadLimitInMb": 100,
+        "state": "Enabled",
+        "mode": "Detection"
+      }
+    },
+    "firewallPolicyCustomRules": {
+      "value": []
+    },
+    "firewallPolicyManagedRuleSets": {
+      "value": [
+        {
+          "ruleSetType": "OWASP",
+          "ruleSetVersion": "3.2"
+        }
+      ]
+    },
+    "firewallPolicyManagedRuleExclusions": {
+      "value": []
+    }
+  }
+}

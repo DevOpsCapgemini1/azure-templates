@@ -1,7 +1,13 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
-
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.10.13.619",
+      "templateHash": "5414145662929901268"
+    }
+  },
   "parameters": {
     "deploymentName": {
       "type": "string",
@@ -11,7 +17,7 @@
   "resources": [
     {
       "type": "Microsoft.Resources/deployments",
-      "apiVersion": "2015-01-01",
+      "apiVersion": "2020-10-01",
       "name": "[parameters('deploymentName')]",
       "properties": {
         "expressionEvaluationOptions": {
@@ -20,7 +26,7 @@
         "mode": "Incremental",
         "parameters": {
           "location": {
-            "value": "westeurope"
+            "value": "uksouth"
           },
           "applicationGatewayName": {
             "value": "MyApplicationGateway"
@@ -38,16 +44,16 @@
             "value": "MyFirewallPolicyName"
           },
           "publicIpAddressName": {
-            "value": "MyPublicIpAddress"
+            "value": "MyPublicIpAddress-01"
           },
           "vNetResourceGroup": {
-            "value": "MyResourceGroup921"
+            "value": "uksouthgrp"
           },
           "vNetName": {
-            "value": "myVVNET"
+            "value": "myArmVnet"
           },
           "subnetName": {
-            "value": "mySubnet-ps"
+            "value": "subnet-01"
           },
           "firewallPolicyManagedRuleSets": {
             "value": [
@@ -120,8 +126,8 @@
           "metadata": {
             "_generator": {
               "name": "bicep",
-              "version": "0.9.1.41621",
-              "templateHash": "621986957337453692"
+              "version": "0.10.13.619",
+              "templateHash": "12784958233147940320"
             }
           },
           "parameters": {
@@ -139,7 +145,12 @@
             },
             "tier": {
               "type": "string",
-              "allowedValues": ["Standard", "WAF", "Standard_v2", "WAF_v2"],
+              "allowedValues": [
+                "Standard",
+                "WAF",
+                "Standard_v2",
+                "WAF_v2"
+              ],
               "metadata": {
                 "description": "Application gateway tier"
               }

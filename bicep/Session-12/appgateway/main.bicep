@@ -3,16 +3,16 @@ param deploymentName string = 'appgw${utcNow()}'
 module appGateway 'applicationgateway.bicep' = {
   name: deploymentName
   params: {
-    location: 'westeurope'
+    location: 'uksouth'
     applicationGatewayName: 'MyApplicationGateway'
     sku: 'WAF_v2'
     tier: 'WAF_v2'
     enableWebApplicationFirewall: true
     firewallPolicyName: 'MyFirewallPolicyName'
-    publicIpAddressName: 'MyPublicIpAddress'
-    vNetResourceGroup: 'MyResourceGroup921'
-    vNetName: 'myVVNET'
-    subnetName: 'mySubnet-ps'
+    publicIpAddressName: 'MyPublicIpAddress-01'
+    vNetResourceGroup: 'uksouthgrp'
+    vNetName: 'myArmVnet'
+    subnetName: 'subnet-01'
     firewallPolicyManagedRuleSets: [
       {
         ruleSetType: 'OWASP'

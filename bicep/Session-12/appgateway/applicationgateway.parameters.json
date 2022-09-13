@@ -1,0 +1,47 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "applicationGatewayName": {
+      "value": ""
+    },
+    "location": {
+      "value": ""
+    },
+    "tier": {},
+    "sku": {},
+    "publicIpAddressName": {
+      "value": ""
+    },
+    "vNetResourceGroup": {
+      "value": ""
+    },
+    "vNetName": {
+      "value": ""
+    },
+    "subnetName": {
+      "value": ""
+    },
+    "httpListeners": {
+      "value": []
+    },
+    "backendAddressPools": {
+      "value": []
+    },
+    "backendHttpSettings": {
+      "value": []
+    },
+    "rules": {
+      "value": []
+    },
+    "frontEndPorts": {
+      "value": []
+    },
+    "firewallPolicyName": {
+      "value": ""
+    },
+    "firewallPolicyManagedRuleSets": {
+      "value": []
+    }
+  }
+}
